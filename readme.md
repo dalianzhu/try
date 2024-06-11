@@ -13,10 +13,13 @@ go get github.com/dalianzhu/try
 ```
 
 ## Usage
-
-### Handling Panics in Callbacks
-
-The package defines a set of functions to safely execute callbacks that may return multiple values and an error. If a callback panics, the panic is caught and returned as an error.
+### Package-Level Variables
+`ErrCallbackPanic`
+- Type: error
+- Description: ErrCallbackPanic is the error type returned when the callback function panics.
+```go
+var ErrCallbackPanic = errors.New("callback panic")
+```
 
 ### Functions
 #### Try1WithError
@@ -25,10 +28,13 @@ The package defines a set of functions to safely execute callbacks that may retu
 func Try1WithError[A any](callback func() (A, error)) (ret A, err error)
 ```
 
-- **Description**: Executes a callback that returns one value and an error. 
-If the callback panics, the panic is returned as an error of type `ErrCallbackPanic`. 
+- **Description**: 
 
-If the callback returns an error, that error is returned. Otherwise, it returns the value and `nil`.
+  Executes a callback that returns one value and an error. 
+  If the callback panics, the panic is returned as an error of type `ErrCallbackPanic`. 
+  
+  If the callback returns an error, that error is returned. Otherwise, it returns the value and `nil`.
+
 - **Parameters**:
   - **callback** (`func() (A, error)`) - The callback function to be executed, which returns one value of type `A` and an error.
 - **Returns**: The value returned by the callback or the fallback value.
@@ -41,9 +47,12 @@ If the callback returns an error, that error is returned. Otherwise, it returns 
 func Try2WithError[A, B any](callback func() (A, B, error)) (ret A, ret2 B, err error)
 ```
 
-- **Description**: Executes a callback that returns two values and an error. If the callback panics, the panic is returned as an error of type `ErrCallbackPanic`. 
+- **Description**: 
 
-If the callback returns an error, that error is returned. Otherwise, it returns the values and `nil`.
+  Executes a callback that returns two values and an error. If the callback panics, the panic is returned as an error of type `ErrCallbackPanic`. 
+  
+  If the callback returns an error, that error is returned. Otherwise, it returns the values and `nil`.
+
 - **Parameters**:
     - **callback** (`func() (A, B, error)`) - The callback function to be executed, which returns two values of type `A` and `B`, and an error.
 - **Returns**:
@@ -57,12 +66,11 @@ If the callback returns an error, that error is returned. Otherwise, it returns 
 func Try3WithError[A, B, C any](callback func() (A, B, C, error)) (ret A, ret2 B, ret3 C, err error)
 ```
 
-- **Description**: Executes a callback that returns two values and an error. If the callback panics, the panic is returned as an error of type `ErrCallbackPanic`. 
+- **Description**: 
 
+  Executes a callback that returns two values and an error. If the callback panics, the panic is returned as an error of type `ErrCallbackPanic`. 
 
-Executes a callback that returns three values and an error. If the callback panics, the panic is returned as an error of type `ErrCallbackPanic`. 
-
-If the callback returns an error, that error is returned. Otherwise, it returns the values and `nil`.
+  If the callback returns an error, that error is returned. Otherwise, it returns the values and `nil`.
 
 - **Parameters**:
   - **callback** (`func() (A, B, C, error)`) - The callback function to be executed, which returns three values of type `A`, `B`, and `C`, and an error.
@@ -110,7 +118,7 @@ func Try3Or[A, B, C any](callback func() (A, B, C, error), fallbackA A, fallback
   - `fallbackC`: The fallback value to return if the callback panics or returns an error.
 - **Returns**: The values returned by the callback or the fallback values.
 
-## Example
+## Examples
 
 ### Try1WithError
 
@@ -173,16 +181,6 @@ func main() {
     fmt.Println("Result A:", resultA, "Result B:", resultB) // Output: Result A: -1 Result B: fallback
 }
 ```
-
-## Error Handling
-
-The package defines a custom error type:
-
-```go
-var ErrCallbackPanic = errors.New("callback panic")
-```
-
-This error is returned when a panic occurs in the callback function, allowing you to distinguish between regular errors and panics.
 
 ## License
 MIT license 
